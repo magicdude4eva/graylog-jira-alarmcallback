@@ -48,6 +48,7 @@ import org.graylog2.plugin.alarms.callbacks.AlarmCallbackException;
 import org.graylog2.plugin.configuration.Configuration;
 import org.graylog2.plugin.configuration.ConfigurationException;
 import org.graylog2.plugin.configuration.ConfigurationRequest;
+import org.graylog2.plugin.configuration.fields.BooleanField;
 import org.graylog2.plugin.configuration.fields.ConfigurationField;
 import org.graylog2.plugin.configuration.fields.TextField;
 import org.graylog2.plugin.streams.Stream;
@@ -61,20 +62,26 @@ import com.google.common.collect.Maps;
 public class JiraAlarmCallback implements AlarmCallback
 {
 	// Configuration Constants
-	public static final String CK_JIRA_INSTANCE_URL		= "jira_instance_url";
-	public static final String CK_JIRA_USERNAME			= "jira_username";
-	public static final String CK_JIRA_PASSWORD			= "jira_password";
-	public static final String CK_JIRA_PROJECT_KEY		= "jira_project_key";
-	public static final String CK_JIRA_TITLE_TEMPLATE	= "jira_title_template";
-	public static final String CK_JIRA_ISSUE_TYPE		= "jira_issue_type";
-	public static final String CK_JIRA_LABELS			= "jira_labels";
-	public static final String CK_JIRA_PRIORITY			= "jira_priority";
-	public static final String CK_JIRA_COMPONENTS		= "jira_components";
-	public static final String CK_JIRA_MESSAGE_TEMPLATE	= "jira_message_template";
-	public static final String CK_JIRA_MD5_CUSTOM_FIELD	= "jira_md5_custom_field";
-	public static final String CK_JIRA_MD5_HASH_PATTERN	= "jira_md5_hash_pattern";
-	public static final String CK_JIRA_MD5_FILTER_QUERY	= "jira_md5_filter_query";
-	public static final String CK_JIRA_GRAYLOG_MAPPING	= "jira_graylog_message_field_mapping";
+	public static final String CK_JIRA_INSTANCE_URL				= "jira_instance_url";
+	public static final String CK_JIRA_USERNAME					= "jira_username";
+	public static final String CK_JIRA_PASSWORD					= "jira_password";
+	public static final String CK_JIRA_PROJECT_KEY				= "jira_project_key";
+	public static final String CK_JIRA_TITLE_TEMPLATE			= "jira_title_template";
+	public static final String CK_JIRA_ISSUE_TYPE				= "jira_issue_type";
+	public static final String CK_JIRA_LABELS					= "jira_labels";
+	public static final String CK_JIRA_PRIORITY					= "jira_priority";
+	public static final String CK_JIRA_COMPONENTS				= "jira_components";
+	public static final String CK_JIRA_MESSAGE_TEMPLATE			= "jira_message_template";
+	public static final String CK_JIRA_MESSAGE_TEMPLATE_COMMENT	= "jira_message_template_comment";
+	public static final String CK_JIRA_MD5_CUSTOM_FIELD			= "jira_md5_custom_field";
+	public static final String CK_JIRA_MD5_HASH_PATTERN			= "jira_md5_hash_pattern";
+	public static final String CK_JIRA_MD5_HISTORY				= "jira_md5_history";
+	public static final String CK_JIRA_MD5_FILTER_QUERY			= "jira_md5_filter_query";
+	public static final String CK_JIRA_GRAYLOG_MAPPING			= "jira_graylog_message_field_mapping";
+
+	public static final String CK_JIRA_COUNTER_CUSTOM_FIELD		= "jira_counter_custom_field";
+
+	public static final String CK_JIRA_COUNTER_CUSTOM_FIELD_DESC = "JIRA Counter custom field";
 
 	public static final String CK_GRAYLOG_URL = "graylog_url";
 	public static final String CK_MESSAGE_REGEX = "message_regex";
@@ -146,6 +153,7 @@ public class JiraAlarmCallback implements AlarmCallback
 					configuration.getString(CK_JIRA_PROJECT_KEY),
 					buildJIRATitle(stream, result),
 					buildDescription(stream, result),
+					configuration.getBoolean(CK_JIRA_MESSAGE_TEMPLATE_COMMENT),
 					configuration.getString(CK_JIRA_LABELS),
 					configuration.getString(CK_JIRA_ISSUE_TYPE),
 					configuration.getString(CK_JIRA_COMPONENTS),
@@ -155,6 +163,8 @@ public class JiraAlarmCallback implements AlarmCallback
 					configuration.getString(CK_JIRA_PASSWORD),
 					configuration.getString(CK_JIRA_MD5_FILTER_QUERY),
 					configuration.getString(CK_JIRA_MD5_CUSTOM_FIELD),
+					configuration.getBoolean(CK_JIRA_MD5_HISTORY),
+					configuration.getString(CK_JIRA_COUNTER_CUSTOM_FIELD),
 					buildJIRAGraylogMapping(stream, result),
 					getJIRAMessageDigest(stream, result)
 				),
@@ -214,6 +224,12 @@ public class JiraAlarmCallback implements AlarmCallback
 				CK_JIRA_MESSAGE_TEMPLATE, "JIRA message template", CONST_JIRA_MESSAGE_TEMPLATE.replaceAll("\n", "\\\n"),
 				"Message template for JIRA", ConfigurationField.Optional.NOT_OPTIONAL));
 
+		configurationRequest.addField(new BooleanField(
+				CK_JIRA_MESSAGE_TEMPLATE_COMMENT, "JIRA message template as comments", true,
+				"Check if your want your message template to be added as a JIRA comment if there is already a JIRA issue matching this MD5. "
+						+ "You would typically check this on if your message template carries troubleshooting information that is different from one "
+						+ "occurrence to the next."));
+
 		configurationRequest.addField(new TextField(
 				CK_JIRA_TITLE_TEMPLATE, "JIRA issue title template", CONST_JIRA_TITLE_TEMPLATE,
 				"Title template for JIRA tasks", ConfigurationField.Optional.NOT_OPTIONAL));
@@ -244,9 +260,20 @@ public class JiraAlarmCallback implements AlarmCallback
 				CK_JIRA_MD5_HASH_PATTERN, "JIRA MD5 pattern", "",
 				"Pattern to construct MD5. Example: " + CONST_JIRA_MD5_TEMPLATE, ConfigurationField.Optional.OPTIONAL));
 
+		configurationRequest.addField(new BooleanField(
+				CK_JIRA_MD5_HISTORY, "JIRA MD5 History", false,
+				"If this option is checked upon creating a new JIRA issue for a given MD5, a list of all previous JIRA issues "
+						+ "(irrespective of their states) will be put in the JIRA description of the new JIRA issue. This can be used as an "
+						+ "indication that a problem has not been properly fixed as it keeps reappearing."));
+
 		configurationRequest.addField(new TextField(
-				CK_JIRA_MD5_CUSTOM_FIELD, "JIRA MD5 custom field", "",
-				"Custom field name for the MD5 hash, this will be in the format of customfield_####. If not set, we will try and find it",
+				CK_JIRA_MD5_CUSTOM_FIELD, "JIRA MD5 custom field", "10501",
+				"Custom field name for the MD5 hash, this will be in the format of customfield_#### where '####' is an integer value. If not set, we will try and find it",
+				ConfigurationField.Optional.OPTIONAL));
+
+		configurationRequest.addField(new TextField(
+				CK_JIRA_COUNTER_CUSTOM_FIELD, CK_JIRA_COUNTER_CUSTOM_FIELD_DESC, "10200",
+				"Custom field name for the counter, this will be in the format of customfield_#### where '####' is an integer value. If not set, we will try and find it",
 				ConfigurationField.Optional.OPTIONAL));
 
 		configurationRequest.addField(new TextField(
