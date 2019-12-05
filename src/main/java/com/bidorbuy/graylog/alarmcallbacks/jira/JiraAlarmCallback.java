@@ -226,9 +226,9 @@ public class JiraAlarmCallback implements AlarmCallback
 
 		configurationRequest.addField(new BooleanField(
 				CK_JIRA_MESSAGE_TEMPLATE_COMMENT, "JIRA message template as comments", true,
-				"Check if your want your message template to be added as a JIRA comment if there is already a JIRA issue matching this MD5. "
-						+ "You would typically check this on if your message template carries troubleshooting information that is different from one "
-						+ "occurrence to the next."));
+				"Check if you want your message template to be added as a JIRA comment if there is already a JIRA issue"
+				+ " matching this MD5. You would typically check this on if your message template carries "
+				+ "troubleshooting information that is different from one occurrence to the next."));
 
 		configurationRequest.addField(new TextField(
 				CK_JIRA_TITLE_TEMPLATE, "JIRA issue title template", CONST_JIRA_TITLE_TEMPLATE,
@@ -262,18 +262,21 @@ public class JiraAlarmCallback implements AlarmCallback
 
 		configurationRequest.addField(new BooleanField(
 				CK_JIRA_MD5_HISTORY, "JIRA MD5 History", false,
-				"If this option is checked upon creating a new JIRA issue for a given MD5, a list of all previous JIRA issues "
-						+ "(irrespective of their states) will be put in the JIRA description of the new JIRA issue. This can be used as an "
-						+ "indication that a problem has not been properly fixed as it keeps reappearing."));
+				"If this option is checked, then upon creating a new JIRA issue for a given MD5, a list of all "
+				+ "previous JIRA issues (irrespective of their states) will be put in the JIRA description of the "
+				+ "new JIRA issue. This can be used as an indication that a problem has not been properly fixed as "
+				+ "it keeps reappearing."));
 
 		configurationRequest.addField(new TextField(
 				CK_JIRA_MD5_CUSTOM_FIELD, "JIRA MD5 custom field", "10501",
-				"Custom field name for the MD5 hash, this will be in the format of customfield_#### where '####' is an integer value. If not set, we will try and find it",
+				"Custom field name for the MD5 hash, this will be in the format of customfield_#### where '####' is an"
+				+ " integer value. If not set, we will try and find it",
 				ConfigurationField.Optional.OPTIONAL));
 
 		configurationRequest.addField(new TextField(
 				CK_JIRA_COUNTER_CUSTOM_FIELD, CK_JIRA_COUNTER_CUSTOM_FIELD_DESC, "10200",
-				"Custom field name for the counter, this will be in the format of customfield_#### where '####' is an integer value. If not set, we will try and find it",
+				"Custom field name for the counter, this will be in the format of customfield_#### where '####' is an"
+				+ " integer value. If not set, the counter functionality will be disabled.",
 				ConfigurationField.Optional.OPTIONAL));
 
 		configurationRequest.addField(new TextField(

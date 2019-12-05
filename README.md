@@ -72,12 +72,12 @@ Configuration
 
 ### Callback options
 * __JIRA Instance URL__: The URL to your JIRA server
-* __Project Key__: The project key under which the issue will be created in JIRA
-* __Issue Type__: The JIRA issue type (defaults to `Bug`). Ensure that the issue type matches your project settings
+* __JIRA Project Key__: The project key under which the issue will be created in JIRA
+* __JIRA Issue Type__: The JIRA issue type (defaults to `Bug`). Ensure that the issue type matches your project settings
 * __Graylog URL__: The URL to the Graylog web-interface. The URL is used to generate links within JIRA
-* __Issue Priority__: The JIRA issue priority (defaults to `Minor`). Ensure that the issue priority matches your project settings
-* __Labels__: Comma-separated list of labels to add to the issue
-* __Message template__: Message template used to create a JIRA issue. The message template uses JIRA Text Formatting Notation. Line-breaks can be added as "`\n`". The message-template also accepts `[PLACEHOLDERS]`
+* __JIRA Issue Priority__: The JIRA issue priority (defaults to `Minor`). Ensure that the issue priority matches your project settings
+* __JIRA Labels__: Comma-separated list of labels to add to the issue
+* __JIRA Message template__: Message template used to create a JIRA issue. The message template uses JIRA Text Formatting Notation. Line-breaks can be added as "`\n`". The message-template also accepts `[PLACEHOLDERS]`
   * __[STREAM_TITLE]__: Title of the stream
   * __[STREAM_URL]__: URL to the stream
   * __[STREAM_RULES]__: Stream rules triggered
@@ -87,14 +87,17 @@ Configuration
   * __[LAST_MESSAGE.source]__: If a message is present, the placeholder will be replaced with the source origin of the message
   * __[LAST_MESSAGE.message]__: The actual message
   * __[LAST_MESSAGE.fieldname]__: Replaces with the field `fieldname` in the logged record i.e. "`[LAST_MESSAGE.path]`" would display the full logpath where the message originated from. `fieldname` is case-sensitive. If a `fieldname` does not exist in the message, the template field is deleted in the message.
-* __JIRA task title__: Sets the title of the JIRA task. Can include `[MESSAGE_REGEX]`(see __Message regex__). Can also include any field via `[LAST_MESSAGE.fieldname]`
+* __JIRA message template as comments__: Whether you want your message template to be added as a JIRA comment if there is already a JIRA issue matching this MD5. You would typically check this on if your message template carries troubleshooting information that is different from one occurrence to the next.
+* __JIRA issue title template__: Sets the title of the JIRA task. Can include `[MESSAGE_REGEX]`(see __Message regex__). Can also include any field via `[LAST_MESSAGE.fieldname]`
 * __Message regex__: A regular expression to extract a portion of the message. This is used to extract an exception message and can be used to populate the __JIRA task title__ or the __JIRA MD5 pattern__
 * __JIRA MD5 pattern__: A string of multiple placeholders patterns to calculate a MD5 pattern which is used to avoid duplicates in JIRA. It defaults to __[MESSAGE_REGEX]__ but can also include any field from __[LAST_MESSAGE.*]__:
   * Create a MD5 consisting of message regex and message source: __[LAST_MESSAGE.source][MESSAGE_REGEX]__
   * Create a MD5 consisting of fields from the message: __[LAST_MESSAGE.source][LAST_MESSAGE.errorCode][LAST_MESSAGE.tags][LAST_MESSAGE.type]__
   * If a specified field does not exist in the last message, it will be skipped as part of the MD5 generation
+* __JIRA MD5 History__: If this option is checked, then upon creating a new JIRA issue for a given MD5, a list of all previous JIRA issues (irrespective of their states) will be put in the JIRA description of the new JIRA issue. This can be used as an indication that a problem has not been properly fixed as it keeps reappearing.
 * __JIRA MD5 custom field__: The JIRA custom-field name (typically called `customfield_####`. If the field is not set, the plugin will search the JIRA tasks meta-data for the `graylog_md5` and then use the defined custom-field automatically. It is preferred to specify the custom-field to avoid giving the JIRA user edit-permissions (and to also avoid another JIRA lookup call)
   * You can get the custom-field id via the JIRA interface or by calling https://MYJIRA.SERVER.COM/rest/api/2/issue/[ISSUE_KEY]/editmeta and then search for `graylog_md5`. 
+* __JIRA Counter custom field__: Custom field name for the counter, this will be in the format of customfield_#### where '####' is an integer value. If not set, the counter functionality will be disabled.
 * __JIRA duplicate filter query__: An optional filter query which is used when searching for the MD5 field in JIRA. The filter query must contain the `AND` term and can include any valid JQL - i.e. `AND Status not in (Closed, Done, Resolved)`.
 * __JIRA/Graylog field mapping__: An optional comma-separated list of Graylog message-fields mapping into JIRA. The list needs to be in the format of `graylogmessagefieldname1=jirafieldname1,graylogmessagefieldname2=jirafieldname2` 
   * JIRA fields which are iterable (such as `fixVersions` or `versions`) need to be configured as `fixVersions#i`   

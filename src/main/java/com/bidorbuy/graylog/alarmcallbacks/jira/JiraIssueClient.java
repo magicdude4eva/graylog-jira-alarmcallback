@@ -580,6 +580,5 @@ import net.sf.json.JSONObject;
 			LOG.error(msg, ex);
 			throw new AlarmCallbackException(msg, ex);
 		}
-
 	}
 }
