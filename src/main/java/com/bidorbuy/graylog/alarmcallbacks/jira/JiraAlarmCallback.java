@@ -268,7 +268,7 @@ public class JiraAlarmCallback implements AlarmCallback
 				+ "it keeps reappearing."));
 
 		configurationRequest.addField(new TextField(
-				CK_JIRA_MD5_CUSTOM_FIELD, "JIRA MD5 custom field", "10501",
+				CK_JIRA_MD5_CUSTOM_FIELD, "JIRA MD5 custom field", "",
 				"Custom field name for the MD5 hash, this will be in the format of customfield_#### where '####' is an"
 				+ " integer value. If not set, we will try and find it",
 				ConfigurationField.Optional.OPTIONAL));
