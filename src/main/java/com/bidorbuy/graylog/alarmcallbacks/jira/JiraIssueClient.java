@@ -522,7 +522,7 @@ import net.sf.json.JSONObject;
 
 		if (fieldValue == null)
 		{
-			return 0;
+			return 1;
 		}
 
 		if (fieldValue instanceof Number)
@@ -535,7 +535,7 @@ import net.sf.json.JSONObject;
 			final String str = ((String) fieldValue).trim();
 			if (str.isEmpty())
 			{
-				return 0;
+				return 1;
 			}
 
 			try
@@ -546,13 +546,13 @@ import net.sf.json.JSONObject;
 			{
 				LOG.warn("The parameter '" + JiraAlarmCallback.CK_JIRA_COUNTER_CUSTOM_FIELD_DESC
 						+ "' has a non-integer string value \"" + str + "\". Defaulting to zero.", e);
-				return 0;
+				return 1;
 			}
 		}
 
 		LOG.warn("The parameter '" + JiraAlarmCallback.CK_JIRA_COUNTER_CUSTOM_FIELD_DESC + "' has a non-integer value ("
 				+ fieldValue.getClass().getName() + "). Defaulting to zero.");
-		return 0;
+		return 1;
 	}
 
 	/**
