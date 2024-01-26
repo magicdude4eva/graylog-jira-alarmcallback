@@ -1,7 +1,8 @@
 repo_name: magicdude4eva/graylog-jira-alarmcallback
-report_id: 61abf416994bfabf76e2b6d8bf9465cf
+report_id: 02a07f03a976703d019e833352b7a65f
+version: 0.1
 repo_type: Public
-timestamp: '2023-12-14T12:24:12+00:00'
+timestamp: '2024-01-11T12:35:43+00:00'
 requested_by: magicdude4eva
 provider: github
 branch: master
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/995/K85ZWV2F.png
+  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -25,6 +27,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback
   detection_source: Repo Metadata
 - name: org.apache.commons:commons-lang3
   description: Apache Commons Lang
