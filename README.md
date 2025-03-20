@@ -145,7 +145,7 @@ Original idea from https://github.com/tjackiw/graylog-plugin-jira
 (ETH)    0xfc316ba7d8dc325250f1adfafafc320ad75d87c0
 (BTC)    1Mhq9SY6DzPhs7PNDx7idXFDWsGtyn7GWM
 (BNB)    0xfc316ba7d8dc325250f1adfafafc320ad75d87c0
-Crypto.com PayString: magicdude$paystring.crypto.com	
+Crypto.com PayString: magicdude$paystring.crypto.com    
 ```
 
 Go to [Curve.com to add your Crypto.com card to ApplePay](https://www.curve.com/join#DWPXKG6E) and signup to [Crypto.com for a staking and free Crypto debit card](https://crypto.com/app/ref6ayzqvp).
