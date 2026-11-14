@@ -17,7 +17,7 @@ A Graylog alarm callback plugin that integrates [Graylog](https://www.graylog.or
 * Templating of JIRA issue title and JIRA message via place holders
 * Embed a MD5 hash into the JIRA issue via custom-field or embed within JIRA-message to prevent duplicate JIRA issues
 
-![Graylog JIRA plugin](https://raw.githubusercontent.com/magicdude4eva/graylog-jira-alarmcallback/master/screenshot-alert-config.png)
+![Graylog JIRA plugin](https://raw.githubusercontent.com/magicdude4eva/graylog-jira-alarmcallback/main/screenshot-alert-config.png)
 
 # Pre-requisites for Java exception logging
 If you use an application server such as Tomcat, we suggest that you use [Logstash](https://www.elastic.co/products/logstash) to pre-process your log-files and ship the log-records via Gelf output into Graylog.
@@ -68,7 +68,7 @@ Configuration
 -------------
 
 ### Configure the stream alert
-![Graylog callback configuration](https://raw.githubusercontent.com/magicdude4eva/graylog-jira-alarmcallback/master/screenshot-plugin-overview.png)
+![Graylog callback configuration](https://raw.githubusercontent.com/magicdude4eva/graylog-jira-alarmcallback/main/screenshot-plugin-overview.png)
 
 ### Callback options
 * __JIRA Instance URL__: The URL to your JIRA server
@@ -129,7 +129,7 @@ With the following settings:
 * __JIRA MD5 pattern__ = `[MESSAGE_REGEX]`
 
 The JIRA issue will be logged as follows:
-![JIRA issue](https://raw.githubusercontent.com/magicdude4eva/graylog-jira-alarmcallback/master/screenshot-jira.png)
+![JIRA issue](https://raw.githubusercontent.com/magicdude4eva/graylog-jira-alarmcallback/main/screenshot-jira.png)
  
 ## Copyright
 

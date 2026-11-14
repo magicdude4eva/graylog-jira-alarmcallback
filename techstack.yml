@@ -38,7 +38,7 @@ tools:
   category: Libraries
   sub_category: Maven Packages
   image_url: https://img.stackshare.io/package/maven/image.png
-  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback/blob/master/pom.xml
+  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback/blob/main/pom.xml
   detection_source: pom.xml
   last_updated_by: Gerd Naschenweng
   last_updated_on: 2017-03-14 06:44:42.000000000 Z
@@ -51,7 +51,7 @@ tools:
   category: Libraries
   sub_category: Maven Packages
   image_url: https://img.stackshare.io/package/maven/image.png
-  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback/blob/master/pom.xml
+  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback/blob/main/pom.xml
   detection_source: pom.xml
   last_updated_by: Gerd Naschenweng
   last_updated_on: 2017-03-14 06:44:42.000000000 Z
@@ -71,7 +71,7 @@ tools:
   category: Libraries
   sub_category: Maven Packages
   image_url: https://img.stackshare.io/package/maven/image.png
-  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback/blob/master/pom.xml
+  detection_source_url: https://github.com/magicdude4eva/graylog-jira-alarmcallback/blob/main/pom.xml
   detection_source: pom.xml
   last_updated_by: Gerd Naschenweng
   last_updated_on: 2017-03-14 06:44:42.000000000 Z
